@@ -26,7 +26,7 @@ function App() {
         </Route>
 
         <Route path="/" element={<SharedLayout />}>
-          <Route path="/landing" element={<Landing />} />
+          <Route path="/" element={<Landing />} />
           <Route path="/auth/login" element={<AuthLogin />} />
         </Route>
       </Routes>

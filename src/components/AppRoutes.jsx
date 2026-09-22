@@ -15,7 +15,7 @@ function AppRoutes() {
   const navigate = useNavigate();
   const logout = () => {
     queryClient.removeQueries({ queryKey: ["userInfo"] });
-    navigate("/landing", { replace: true });
+    navigate("/", { replace: true });
   };
   return (
     <Layout>

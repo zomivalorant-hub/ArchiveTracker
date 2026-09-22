@@ -5,7 +5,6 @@ import {
   ClipboardClock,
   FolderArchive,
   LayoutDashboard,
-  UserGroup,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
