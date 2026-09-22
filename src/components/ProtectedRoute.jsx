@@ -3,9 +3,10 @@ import { Navigate } from "react-router-dom";
 
 const ProtectedRoute = ({ children }) => {
   const queryClient = useQueryClient();
-  const validUser = queryClient.getQueriesData({ queryKey: ["userInfo"] });
-  if (!validUser || validUser === null) {
-    return <Navigate to="/" />;
+  const validUser = queryClient.getQueryData(["userInfo"]);
+
+  if (!validUser) {
+    return <Navigate to="/landing" />;
   }
   return children;
 };

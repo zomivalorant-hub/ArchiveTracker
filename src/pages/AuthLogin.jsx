@@ -12,7 +12,6 @@ const AuthLogin = () => {
         form.resetFields();
       },
     });
-    console.log(val);
   };
 
   return (
