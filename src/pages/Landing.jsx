@@ -24,7 +24,7 @@ const Landing = () => {
             />
             <Link to="/auth/login">
               <p className="bg-amber-200 py-2 px-2 rounded-sm">
-                Plese click here to login{" "}
+                Plese click here to login
               </p>
             </Link>
           </span>
