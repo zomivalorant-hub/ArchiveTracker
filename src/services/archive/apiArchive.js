@@ -31,3 +31,16 @@ export async function addArchive(formData) {
   }
   return data;
 }
+
+export async function updateArchive(formData) {
+  const { data, error } = await supabase
+    .from("tblarchive")
+    .update(formData)
+    .eq("id", formData.id);
+
+  if (error) {
+    throw new Error(error);
+  }
+
+  return data;
+}

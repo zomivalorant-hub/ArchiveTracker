@@ -5,6 +5,7 @@ import {
   ClipboardClock,
   FolderArchive,
   LayoutDashboard,
+  UserCog,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -30,6 +31,7 @@ const SidebarMenu = () => {
       ? [
           getItem("Archive", "/archive", <FolderArchive />),
           getItem("Tracking", "/track", <ClipboardClock />),
+          getItem("System User", "/auth-user", <UserCog />),
         ]
       : []),
 

@@ -13,15 +13,17 @@ import { useAllArchive } from "../../services/archive/archQuery";
 import {
   useCreateArchive,
   useDelArchive,
+  useUpdateArchive,
 } from "../../services/archive/archMutation";
 import { useQueryClient } from "@tanstack/react-query";
-import { FilePlusCorner, SearchCheck, Trash } from "lucide-react";
+import { FilePlusCorner, PencilLine, SearchCheck, Trash } from "lucide-react";
 import { useRef, useState } from "react";
 
 const ArchiveScreen = () => {
   const dataArchive = useAllArchive();
   const delArchive = useDelArchive();
   const addArchive = useCreateArchive();
+  const editArchive = useUpdateArchive();
 
   const queryClient = useQueryClient();
 
@@ -33,17 +35,49 @@ const ArchiveScreen = () => {
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
 
+  const [addEdit, setAddEdit] = useState(true);
+  const [uid, setUid] = useState();
+
   const onFinishData = (values) => {
-    addArchive.mutate(values, {
-      onError: (e) => {
-        message.error(e.message);
-      },
-      onSuccess: async () => {
-        message.success("New archive was added successfully!");
-        form.resetFields();
-        await queryClient.invalidateQueries("allArchive");
-      },
+    if (addEdit) {
+      addArchive.mutate(values, {
+        onError: (e) => {
+          message.error(e.message);
+        },
+        onSuccess: async () => {
+          message.success("New archive was added successfully!");
+          form.resetFields();
+          setAddEdit(false);
+          await queryClient.invalidateQueries("allArchive");
+        },
+      });
+    } else {
+      editArchive.mutate(
+        { id: uid, ...values },
+        {
+          onError: (e) => {
+            message.error(e.message);
+          },
+          onSuccess: async () => {
+            message.success("Archive details was updated successfully!");
+            form.resetFields();
+            setAddEdit(true);
+            setIsModalOpen(false);
+            await queryClient.invalidateQueries("allArchive");
+          },
+        },
+      );
+    }
+  };
+
+  const onFill = (data) => {
+    setUid(data.id);
+    form.setFieldsValue({
+      ...data,
     });
+    setAddEdit(false);
+    showModal();
+    message.info("You are about editing archive details.");
   };
 
   const handleDelete = (id) => {
@@ -245,7 +279,12 @@ const ArchiveScreen = () => {
     {
       title: <span className="text-gray-400">Action</span>,
       render: (_, text) => (
-        <div className="font-medium text-center flex">
+        <div className="gap-3 font-medium items-center justify-center flex">
+          <div className="text-green-600">
+            <Tooltip title="Edit Details" placement="top">
+              <PencilLine onClick={() => onFill(text)} size="18" />
+            </Tooltip>
+          </div>
           <div className="text-red-400">
             <Tooltip title="Delete">
               <Popconfirm
@@ -255,7 +294,7 @@ const ArchiveScreen = () => {
                 okText="Yes"
                 cancelText="No"
               >
-                <Trash />
+                <Trash size="18" />
               </Popconfirm>
             </Tooltip>
           </div>
@@ -398,7 +437,7 @@ const ArchiveScreen = () => {
           </Form.Item>
           <Form.Item>
             <Button block type="primary" htmlType="submit">
-              Save
+              {addEdit ? "Save" : "Save update"}
             </Button>
           </Form.Item>
         </Form>

@@ -7,6 +7,7 @@ import AppRoutes from "./components/AppRoutes";
 import Overview from "./pages/AuthScreen/Overview";
 import ArchiveScreen from "./pages/AuthScreen/ArchiveScreen";
 import TrackScreen from "./pages/AuthScreen/TrackScreen";
+import AuthUser from "./pages/AuthScreen/AuthUser";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route index element={<Overview />} />
           <Route path="/archive" element={<ArchiveScreen />} />
           <Route path="/track" element={<TrackScreen />} />
+          <Route path="/auth-user" element={<AuthUser />} />
         </Route>
 
         <Route path="/" element={<SharedLayout />}>

@@ -10,9 +10,12 @@ const Landing = () => {
     >
       <div className="flex h-lvh items-center justify-center">
         <div className="grid grid-cols-2 gap-2 w-full">
-          <div className="flex text-3xl font-mono items-center justify-end">
-            Archive and
-            <span className="text-blue-400 ml-2">Tracking Management</span>
+          <div className="flex flex-col items-center justify-center gap-2.5">
+            <div className="text-blue-400 text-3xl">Welcome to</div>
+            <div className=" text-3xl font-mono ">
+              Archiving and
+              <span className="text-blue-400 ml-2">Tracking Management</span>
+            </div>
           </div>
           <span className="flex flex-col items-center justify-center">
             <img
