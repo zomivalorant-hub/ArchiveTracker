@@ -5,6 +5,7 @@ import {
   message,
   Modal,
   Popconfirm,
+  Space,
   Table,
   Tooltip,
 } from "antd";
@@ -14,8 +15,8 @@ import {
   useDelArchive,
 } from "../../services/archive/archMutation";
 import { useQueryClient } from "@tanstack/react-query";
-import { FilePlusCorner, Trash } from "lucide-react";
-import { useState } from "react";
+import { FilePlusCorner, SearchCheck, Trash } from "lucide-react";
+import { useRef, useState } from "react";
 
 const ArchiveScreen = () => {
   const dataArchive = useAllArchive();
@@ -27,6 +28,10 @@ const ArchiveScreen = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [form] = Form.useForm();
+
+  const [searchText, setSearchText] = useState("");
+  const [searchedColumn, setSearchedColumn] = useState("");
+  const searchInput = useRef(null);
 
   const onFinishData = (values) => {
     addArchive.mutate(values, {
@@ -61,6 +66,122 @@ const ArchiveScreen = () => {
     setIsModalOpen(false);
   };
 
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
+  const handleReset = (clearFilters) => {
+    clearFilters();
+    setSearchText("");
+  };
+
+  const getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+      close,
+    }) => (
+      <div
+        style={{
+          padding: 8,
+        }}
+        onKeyDown={(e) => e.stopPropagation()}
+      >
+        <Input
+          ref={searchInput}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{
+            marginBottom: 8,
+            display: "block",
+          }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchCheck size="12" />}
+            size="small"
+            style={{
+              width: 90,
+            }}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => clearFilters && handleReset(clearFilters)}
+            size="small"
+            style={{
+              width: 90,
+            }}
+          >
+            Reset
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              confirm({
+                closeDropdown: false,
+              });
+              setSearchText(selectedKeys[0]);
+              setSearchedColumn(dataIndex);
+            }}
+          >
+            Filter
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              close();
+            }}
+          >
+            close
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchCheck
+        style={{
+          color: filtered ? "#1677ff" : undefined,
+        }}
+      />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+    filterDropdownProps: {
+      onOpenChange(open) {
+        if (open) {
+          setTimeout(() => searchInput.current?.select(), 100);
+        }
+      },
+    },
+    render: (text) =>
+      searchedColumn === dataIndex ? (
+        // eslint-disable-next-line react/jsx-no-undef
+        <Highlighter
+          highlightStyle={{
+            backgroundColor: "#ffc069",
+            padding: 0,
+          }}
+          searchWords={[searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ""}
+        />
+      ) : (
+        text
+      ),
+  });
+
   const colArchive = [
     {
       title: <span className="text-gray-400">No.</span>,
@@ -78,12 +199,14 @@ const ArchiveScreen = () => {
       title: <span className="text-gray-400">Descriptive Title</span>,
       dataIndex: "title",
       key: "title",
+      ...getColumnSearchProps("title"),
       render: (text) => <div className="font-mono text-gray-400">{text}</div>,
     },
     {
       title: <span className="text-gray-400">Location</span>,
       dataIndex: "location",
       key: "location",
+      ...getColumnSearchProps("location"),
       render: (text) => <div className="font-mono text-gray-400">{text}</div>,
     },
     {
@@ -102,18 +225,21 @@ const ArchiveScreen = () => {
       title: <span className="text-gray-400">Folder</span>,
       dataIndex: "folder",
       key: "folder",
+      ...getColumnSearchProps("folder"),
       render: (text) => <div className="font-mono text-gray-400">{text}</div>,
     },
     {
       title: <span className="text-gray-400">Semester</span>,
       dataIndex: "semester",
       key: "semester",
+      ...getColumnSearchProps("semester"),
       render: (text) => <div className="font-mono text-gray-400">{text}</div>,
     },
     {
       title: <span className="text-gray-400">Category</span>,
       dataIndex: "category",
       key: "category",
+      ...getColumnSearchProps("category"),
       render: (text) => <div className="font-mono text-gray-400">{text}</div>,
     },
     {
@@ -140,13 +266,13 @@ const ArchiveScreen = () => {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-2">
+      <div className="flex justify-between mb-2">
         <Button type="dashed" onClick={showModal}>
           <FilePlusCorner />
           <span className="font-bold">Add New</span>
         </Button>
       </div>
-      <div className="px-2 py-2 uppercase text-sm font-bold text-center">
+      <div className="px-1 py-4 uppercase text-sm bg-amber-50 rounded-sm font-bold">
         List of Archive Records
       </div>
       <div className="border-t-pink-700 border-t-2 shadow-sm">

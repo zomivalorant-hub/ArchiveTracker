@@ -51,8 +51,11 @@ const SidebarMenu = () => {
   return (
     <>
       <Flex align="center" justify="center" className="h-16 border-gray-300">
-        <div className="logo">
+        <div className="flex flex-col items-center justify-center">
           <BookOpenText style={{ fontSize: "24px", color: "#1890ff" }} />
+          <p className="font-mono font-semibold">
+            Arch<span className="text-blue-700">Track</span>
+          </p>
         </div>
       </Flex>
       <Menu
