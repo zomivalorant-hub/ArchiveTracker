@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import { SharedLayout } from "./pages/layouts";
+import SharedLayout from "./pages/layouts";
 import Landing from "./pages/Landing";
 import AuthLogin from "./pages/AuthLogin";
 import ProtectedRoute from "./components/ProtectedRoute";
