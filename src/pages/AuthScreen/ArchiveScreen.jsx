@@ -53,7 +53,7 @@ const ArchiveScreen = () => {
       },
       onSuccess: async () => {
         message.success("Successfully deleted!");
-        await queryClient.invalidateQueries("listSupplier");
+        await queryClient.invalidateQueries("allArchive");
       },
     });
   };
