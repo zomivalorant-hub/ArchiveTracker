@@ -1,8 +1,9 @@
-// import { useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
+import { apiAllUsers } from "./apiAuth";
 
-// export function useUser(){
-//     const {isLoading, data: authUser} = useQuery({
-//         queryKey:["user"],
-//         queryFn:
-//     })
-// }
+export function useAllUsers() {
+  return useQuery({
+    queryKey: ["allUsers"],
+    queryFn: apiAllUsers,
+  });
+}

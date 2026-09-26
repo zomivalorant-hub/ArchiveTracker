@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { apiLogin } from "./apiAuth";
+import { apiAddUser, apiLogin, delUser, updateAUser } from "./apiAuth";
 import { message } from "antd";
 
 export function useLogin() {
@@ -16,13 +16,33 @@ export function useLogin() {
       }
       queryClient.setQueryData(["userInfo"], user);
       message.success("Authentication successfully!");
-        if (user) {
-          navigate("/", { replace: true });
-        }
+      if (user) {
+        navigate("/", { replace: true });
+      }
     },
     onError: (err) => {
       message.error(err.message);
     },
   });
   return { mutateLogin, isLoadingLogin };
+}
+
+export function useDelUser() {
+  return useMutation({
+    mutationFn: delUser,
+  });
+}
+
+export function useUpdateUser() {
+  return useMutation({
+    mutationFn: (data) => {
+      return updateAUser(data);
+    },
+  });
+}
+
+export function useCreateUser() {
+  return useMutation({
+    mutationFn: apiAddUser,
+  });
 }

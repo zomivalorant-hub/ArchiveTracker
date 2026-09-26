@@ -31,3 +31,16 @@ export async function addATravel(formData) {
   }
   return data;
 }
+
+export async function updateTravel(formData) {
+  const { data, error } = await supabase
+    .from("tbltravel")
+    .update(formData)
+    .eq("id", formData.id);
+
+  if (error) {
+    throw new Error(error);
+  }
+
+  return data;
+}

@@ -12,18 +12,21 @@ import {
 } from "antd";
 
 import { useQueryClient } from "@tanstack/react-query";
-import { FilePlusCorner, SearchCheck, Trash } from "lucide-react";
+import { FilePlusCorner, PencilLine, SearchCheck, Trash } from "lucide-react";
 import { useRef, useState } from "react";
 import { useAllTravel } from "../../services/travel/travQuery";
 import {
   useCreateTravel,
   useDelTravel,
+  useUpdateTravel,
 } from "../../services/travel/travMutation";
+import dayjs from "dayjs";
 
 const TrackScreen = () => {
   const dataTravel = useAllTravel();
   const delTravel = useDelTravel();
   const addTravel = useCreateTravel();
+  const editTravel = useUpdateTravel();
 
   const queryClient = useQueryClient();
 
@@ -33,20 +36,56 @@ const TrackScreen = () => {
 
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
+  const [addEdit, setAddEdit] = useState(true);
+  const [uid, setUid] = useState();
+
   const searchInput = useRef(null);
 
   const onFinishData = (values) => {
-    let newData = { ...values, status: "Draft" };
-    addTravel.mutate(newData, {
-      onError: (e) => {
-        message.error(e.message);
-      },
-      onSuccess: async () => {
-        message.success("New travel order was added successfully!");
-        form.resetFields();
-        await queryClient.invalidateQueries("allTravel");
-      },
+    if (addEdit) {
+      let newData = { ...values, status: "Draft" };
+      addTravel.mutate(newData, {
+        onError: (e) => {
+          message.error(e.message);
+        },
+        onSuccess: async () => {
+          message.success("New travel order was added successfully!");
+          form.resetFields();
+          await queryClient.invalidateQueries("allTravel");
+        },
+      });
+    } else {
+      editTravel.mutate(
+        {
+          id: uid,
+          ...values,
+        },
+        {
+          onError: (e) => {
+            message.error(e.message);
+          },
+          onSuccess: async () => {
+            message.success("Travel details was updated successfully!");
+            form.resetFields();
+            setAddEdit(true);
+            setIsModalOpen(false);
+            await queryClient.invalidateQueries("allTravel");
+          },
+        },
+      );
+    }
+  };
+
+  const onFill = (data) => {
+    setUid(data.id);
+    form.setFieldsValue({
+      ...data,
+      depart: dayjs(data.depart),
+      return: dayjs(data.return),
     });
+    setAddEdit(false);
+    showModal();
+    message.info("You are about editing travel order details.");
   };
 
   const handleDelete = (id) => {
@@ -237,7 +276,12 @@ const TrackScreen = () => {
     {
       title: <span className="text-gray-400">Action</span>,
       render: (_, text) => (
-        <div className="font-medium text-center flex">
+        <div className="gap-3 font-medium items-center justify-center flex">
+          <div className="text-green-600">
+            <Tooltip title="Edit Details" placement="top">
+              <PencilLine onClick={() => onFill(text)} size="18" />
+            </Tooltip>
+          </div>
           <div className="text-red-400">
             <Tooltip title="Delete">
               <Popconfirm
@@ -364,6 +408,19 @@ const TrackScreen = () => {
             ]}
           >
             <Input placeholder="ex. John Wick" />
+          </Form.Item>
+
+          <Form.Item
+            label="Status"
+            name="status"
+            rules={[
+              {
+                required: true,
+                message: "Please input status!",
+              },
+            ]}
+          >
+            <Input placeholder="status" />
           </Form.Item>
 
           <Form.Item>
