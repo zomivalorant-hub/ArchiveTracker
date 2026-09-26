@@ -43,8 +43,7 @@ const AuthUser = () => {
 
   const onFinishData = (values) => {
     if (addEdit) {
-      let newData = { ...values, status: "Draft" };
-      addUser.mutate(newData, {
+      addUser.mutate(values, {
         onError: (e) => {
           message.error(e.message);
         },
@@ -82,7 +81,7 @@ const AuthUser = () => {
       ...data,
       depart: dayjs(data.depart),
       return: dayjs(data.return),
-      status: Number(data.status) === 1 ? "Active" : "InActive",
+      status: data.status === 1 ? "Active" : "InActive",
     });
     setAddEdit(false);
     showModal();
@@ -265,16 +264,14 @@ const AuthUser = () => {
       key: "status",
       render: (_, text) => (
         <div>
-          {Number(text.status) == 1 ? (
+          {Number(text.status) === 1 ? (
             <div>
               <p className="text-sm text-green-600">Active</p>
             </div>
           ) : (
-            Number(text.status)(
-              <div>
-                <p className="text-sm text-blue-600">InActive</p>
-              </div>,
-            )
+            <div>
+              <p className="text-sm text-blue-600">InActive</p>
+            </div>
           )}
         </div>
       ),
@@ -409,7 +406,6 @@ const AuthUser = () => {
             ]}
           >
             <Select
-              defaultValue="1"
               placeholder="Select status"
               options={[
                 { value: "1", label: "Active" },

@@ -43,6 +43,6 @@ export function useUpdateUser() {
 
 export function useCreateUser() {
   return useMutation({
-    mutationFn: apiAddUser,
+    mutationFn: (data) => apiAddUser(data),
   });
 }

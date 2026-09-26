@@ -25,16 +25,17 @@ const SidebarMenu = () => {
   const validUser = queryClient.getQueryData(["userInfo"]);
 
   const items = [
-    getItem("Dashboard", "/", <LayoutDashboard />),
-
     ...(validUser?.role === "admin"
       ? [
           getItem("Archive", "/archive", <FolderArchive />),
           getItem("Tracking", "/track", <ClipboardClock />),
           getItem("System User", "/auth-user", <UserCog />),
         ]
-      : []),
-
+      : [
+          getItem("Archive", "/archive", <FolderArchive />),
+          getItem("Tracking", "/track", <ClipboardClock />),
+        ]),
+    //getItem("Dashboard", "/", <LayoutDashboard />),
     // getItem("Registrar", "/container", <LayoutDashboard />, [
     //   getItem("Enrollment", "/enrollment"),
     //   getItem("Promotional", "/promotional"),

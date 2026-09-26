@@ -19,7 +19,7 @@ export async function apiAddUser(formData) {
   const { data, error } = await supabase.from("tblusers").insert(formData);
 
   if (error) {
-    throw new Error("Could not create user");
+    throw new Error(error.message);
   }
   return data;
 }
