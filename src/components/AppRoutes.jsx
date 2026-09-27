@@ -40,7 +40,7 @@ function AppRoutes() {
             onClick={() => setCollapsed(!collapsed)}
           />
           <p className="text-lg font-mono text-mauve-400-400">
-            Archive and Tracking
+            Documents Archiving and Tracking
           </p>
           <Button
             onClick={() => logout()}

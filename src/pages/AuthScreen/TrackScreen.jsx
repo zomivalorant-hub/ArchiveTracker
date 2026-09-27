@@ -9,6 +9,7 @@ import {
   Table,
   Tooltip,
   DatePicker,
+  Select,
 } from "antd";
 
 import { useQueryClient } from "@tanstack/react-query";
@@ -420,7 +421,14 @@ const TrackScreen = () => {
               },
             ]}
           >
-            <Input placeholder="status" />
+            <Select
+              placeholder="Select status"
+              options={[
+                { value: "Draft", label: "Draft" },
+                { value: "Recieved", label: "Recieved" },
+                { value: "Approved", label: "Approved" },
+              ]}
+            />
           </Form.Item>
 
           <Form.Item>
