@@ -230,52 +230,58 @@ const TrackScreen = () => {
       title: <span className="text-gray-400">ToNo.</span>,
       dataIndex: "toid",
       key: "toid",
+
       ...getColumnSearchProps("toid"),
       render: (text) => <div className="font-mono text-gray-400">{text}.</div>,
     },
     {
-      title: <span className="text-gray-400">Purpose of Trip</span>,
+      title: <span className="text-mauve-800">Purpose of Trip</span>,
       dataIndex: "purpose",
       key: "purpose",
+
       ...getColumnSearchProps("purpose"),
-      render: (text) => <div className="font-mono text-gray-400">{text}</div>,
+      render: (text) => <div className="font-mono text-pink-700">{text}</div>,
     },
     {
-      title: <span className="text-gray-400">Destination</span>,
+      title: <span className="text-mauve-800">Destination</span>,
       dataIndex: "destination",
       key: "destination",
       ...getColumnSearchProps("destination"),
-      render: (text) => <div className="font-mono text-gray-400">{text}</div>,
+      render: (text) => <div className="font-mono">{text}</div>,
     },
     {
-      title: <span className="text-gray-400">Departure Date</span>,
+      title: <span className="text-mauve-800">Departure Date</span>,
       dataIndex: "depart",
       key: "depart",
       ...getColumnSearchProps("depart"),
-      render: (text) => <div className="font-mono text-gray-400">{text}</div>,
+      render: (text) => <div className="font-mono">{text}</div>,
     },
     {
-      title: <span className="text-gray-400">Return Date</span>,
+      title: <span className="text-mauve-800">Return Date</span>,
       dataIndex: "return",
       key: "return",
-      render: (text) => <div className="font-mono text-gray-400">{text}</div>,
+      render: (text) => <div className="font-mono">{text}</div>,
     },
     {
-      title: <span className="text-gray-400">Status</span>,
-      dataIndex: "status",
-      key: "status",
-      render: (text) => <div className="font-mono text-gray-400">{text}</div>,
+      title: <span className="text-mauve-800">Status</span>,
+
+      render: (text) =>
+        text.status === "Draft" ? (
+          <div className="font-mono text-gray-600">{text.status}</div>
+        ) : (
+          <div className="font-mono text-green-600">{text.status}</div>
+        ),
     },
     {
-      title: <span className="text-gray-400">CreatedBy</span>,
+      title: <span className="text-mauve-800">CreatedBy</span>,
       dataIndex: "createdby",
       key: "createdby",
       ...getColumnSearchProps("createdby"),
-      render: (text) => <div className="font-mono text-gray-400">{text}</div>,
+      render: (text) => <div className="font-mono">{text}</div>,
     },
 
     {
-      title: <span className="text-gray-400">Action</span>,
+      title: <span className="text-mauve-800">Action</span>,
       render: (_, text) => (
         <div className="gap-3 font-medium items-center justify-center flex">
           <div className="text-green-600">
@@ -317,7 +323,8 @@ const TrackScreen = () => {
           rowKey={(dataTravel) => dataTravel.id}
           dataSource={dataTravel.data}
           columns={colTravel}
-          size="small"
+          size="medium"
+          scroll={{ x: "max-content" }}
         />
       </div>
       <Modal

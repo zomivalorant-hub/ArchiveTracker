@@ -224,57 +224,57 @@ const ArchiveScreen = () => {
       render: (text) => <div className="font-mono text-gray-400">{text}.</div>,
     },
     {
-      title: <span className="text-gray-400">Code</span>,
+      title: <span className="text-mauve-800">Code</span>,
       dataIndex: "code",
       key: "code",
-      render: (text) => <div className="font-mono text-gray-400">{text}</div>,
+      render: (text) => <div className="font-mono">{text}</div>,
     },
     {
-      title: <span className="text-gray-400">Descriptive Title</span>,
+      title: <span className="text-mauve-800">Descriptive Title</span>,
       dataIndex: "title",
       key: "title",
       ...getColumnSearchProps("title"),
-      render: (text) => <div className="font-mono text-gray-400">{text}</div>,
+      render: (text) => <div className="font-mono">{text}</div>,
     },
     {
-      title: <span className="text-gray-400">Location</span>,
+      title: <span className="text-mauve-800">Location</span>,
       dataIndex: "location",
       key: "location",
       ...getColumnSearchProps("location"),
-      render: (text) => <div className="font-mono text-gray-400">{text}</div>,
+      render: (text) => <div className="font-mono text-pink-700">{text}</div>,
     },
     {
-      title: <span className="text-gray-400">Shelve</span>,
+      title: <span className="text-mauve-800">Shelve</span>,
       dataIndex: "shelve",
       key: "shelve",
-      render: (text) => <div className="font-mono text-gray-400">{text}</div>,
+      render: (text) => <div className="font-mono">{text}</div>,
     },
     {
-      title: <span className="text-gray-400">DataMan</span>,
+      title: <span className="text-mauve-800">DataMan</span>,
       dataIndex: "dataman",
       key: "dataman",
-      render: (text) => <div className="font-mono text-gray-400">{text}</div>,
+      render: (text) => <div className="font-mono">{text}</div>,
     },
     {
-      title: <span className="text-gray-400">Folder</span>,
+      title: <span className="text-mauve-800">Folder</span>,
       dataIndex: "folder",
       key: "folder",
       ...getColumnSearchProps("folder"),
-      render: (text) => <div className="font-mono text-gray-400">{text}</div>,
+      render: (text) => <div className="font-mono">{text}</div>,
     },
     {
-      title: <span className="text-gray-400">Semester</span>,
+      title: <span className="text-mauve-800">Semester</span>,
       dataIndex: "semester",
       key: "semester",
       ...getColumnSearchProps("semester"),
-      render: (text) => <div className="font-mono text-gray-400">{text}</div>,
+      render: (text) => <div className="font-mono">{text}</div>,
     },
     {
-      title: <span className="text-gray-400">Category</span>,
+      title: <span className="text-mauve-800">Category</span>,
       dataIndex: "category",
       key: "category",
       ...getColumnSearchProps("category"),
-      render: (text) => <div className="font-mono text-gray-400">{text}</div>,
+      render: (text) => <div className="font-mono">{text}</div>,
     },
     {
       title: <span className="text-gray-400">Action</span>,
@@ -319,7 +319,8 @@ const ArchiveScreen = () => {
           rowKey={(dataArchive) => dataArchive.id}
           dataSource={dataArchive.data}
           columns={colArchive}
-          size="small"
+          size="medium"
+          scroll={{ x: "max-content" }}
         />
       </div>
       <Modal
